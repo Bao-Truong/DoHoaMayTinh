@@ -1,0 +1,6 @@
+﻿  Source.cpp
+c:\users\meep\source\repos\192_dhmt\lab\lab3\lab3\source.cpp(129): warning C4101: 't': unreferenced local variable
+c:\users\meep\source\repos\192_dhmt\lab\lab3\lab3\source.cpp(129): warning C4101: 'u': unreferenced local variable
+c:\users\meep\source\repos\192_dhmt\lab\lab3\lab3\source.cpp(171): warning C4101: 'fAngle': unreferenced local variable
+c:\users\meep\source\repos\192_dhmt\lab\lab3\lab3\source.cpp(170): warning C4101: 'fRInc': unreferenced local variable
+  Lab3.vcxproj -> C:\Users\Meep\source\repos\192_DHMT\Lab\Lab3\Debug\Lab3.exe
