@@ -156,6 +156,9 @@
     <ClCompile Include="L5_03.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C7_glulookat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Renderer.h">

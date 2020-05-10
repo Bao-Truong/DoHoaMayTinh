@@ -10,6 +10,7 @@
 #include <glut.h>
 #include <math.h>
 
+float angleY, angleX;
 
 using namespace std;
 
@@ -565,32 +566,37 @@ void myDisplay()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glViewport(0, 0, screenWidth, screenHeight);
 
+	{//Delete THIS
+		glRotatef(angleY, 0.0, 1.0, 0.0);
+		glRotatef(angleX, 1.0, 0.0, 0.0);
+	}
+
 	drawAxis();
-	drawBase();
-	drawCyl();
+	//drawBase();
+	//drawCyl();
 
-	drawBody1();
+	//drawBody1();
 
-	drawHolder1();
-	drawHolder2();
-	drawHolder3();
+	//drawHolder1();
+	//drawHolder2();
+	//drawHolder3();
 
-	drawSlider1();
-	drawSlider2();
+	//drawSlider1();
+	//drawSlider2();
 
 	drawTayQuay();
 
-	drawTayNoi1();
-	drawTayNoi2();
-	drawTayNoi3();
+	//drawTayNoi1();
+	//drawTayNoi2();
+	//drawTayNoi3();
 
-	findExCircle();
+	//findExCircle();
 
-	drawKey1();
-	drawKey2();
-	drawKey3();
-	drawKey4();
-	drawKey5();
+	//drawKey1();
+	//drawKey2();
+	//drawKey3();
+	//drawKey4();
+	//drawKey5();
 	glFlush();
 	glutSwapBuffers();
 }
@@ -602,9 +608,9 @@ void myInit()
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glColor3f(0.0f, 0.0f, 0.0f);
 
-	//glFrontFace(GL_CCW);
+	glFrontFace(GL_CCW);
 	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -613,7 +619,18 @@ void myInit()
 	glMatrixMode(GL_MODELVIEW);
 
 }
-
+void mySpecial(int key, int x, int y)
+{
+	if (key == GLUT_KEY_LEFT)
+		angleY -= 5;
+	if (key == GLUT_KEY_RIGHT)
+		angleY += 5;
+	if (key == GLUT_KEY_UP)
+		angleX -= 5;
+	if (key == GLUT_KEY_DOWN)
+		angleX += 5;
+	glutPostRedisplay();
+}
 int main(int argc, char* argv[])
 {
 
@@ -672,7 +689,7 @@ int main(int argc, char* argv[])
 
 	glutKeyboardFunc(myKeyboard);
 	glutDisplayFunc(myDisplay);
-
+	glutSpecialFunc(mySpecial);
 	glutMainLoop();
 	return 0;
 }

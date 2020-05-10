@@ -139,6 +139,7 @@
     <ClCompile Include="C6_glMulmatrixf_shear.cpp" />
     <ClCompile Include="C6_H_rotate.cpp" />
     <ClCompile Include="C6_intro.cpp" />
+    <ClCompile Include="C7_glulookat.cpp" />
     <ClCompile Include="L1_TurtleGraphic.cpp" />
     <ClCompile Include="L2_LogoBK.cpp" />
     <ClCompile Include="L3_Arrow.cpp" />

@@ -1,2 +1,8 @@
-﻿  Lab2.cpp
+﻿  Mesh.cpp
+d:\192\dohoamaytinh\lab\lab 2\inititalcode\mesh.cpp(497): warning C4101: 'i': unreferenced local variable
+d:\192\dohoamaytinh\lab\lab 2\inititalcode\mesh.cpp(619): warning C4101: 'i': unreferenced local variable
+d:\192\dohoamaytinh\lab\lab 2\inititalcode\mesh.cpp(744): warning C4101: 'idx': unreferenced local variable
+d:\192\dohoamaytinh\lab\lab 2\inititalcode\mesh.cpp(743): warning C4101: 'i': unreferenced local variable
+d:\192\dohoamaytinh\lab\lab 2\inititalcode\mesh.cpp(904): warning C4101: 'idx': unreferenced local variable
+d:\192\dohoamaytinh\lab\lab 2\inititalcode\mesh.cpp(904): warning C4101: 'i': unreferenced local variable
   Lab2.vcxproj -> C:\Users\Meep\source\repos\192_DHMT\Lab\Lab2\Debug\Lab2.exe
