@@ -1,4 +1,9 @@
-﻿  Source.cpp
-c:\users\meep\source\repos\192_dhmt\lab\lab3\lab3\source.cpp(347): warning C4101: 'fAngle': unreferenced local variable
-c:\users\meep\source\repos\192_dhmt\lab\lab3\lab3\source.cpp(346): warning C4101: 'fRInc': unreferenced local variable
+﻿  Mesh.cpp
+d:\192\dohoamaytinh\lab\lab 3\mesh.cpp(596): warning C4101: 'i': unreferenced local variable
+d:\192\dohoamaytinh\lab\lab 3\mesh.cpp(732): warning C4101: 'i': unreferenced local variable
+d:\192\dohoamaytinh\lab\lab 3\mesh.cpp(857): warning C4101: 'idx': unreferenced local variable
+d:\192\dohoamaytinh\lab\lab 3\mesh.cpp(856): warning C4101: 'i': unreferenced local variable
+d:\192\dohoamaytinh\lab\lab 3\mesh.cpp(1017): warning C4101: 'idx': unreferenced local variable
+d:\192\dohoamaytinh\lab\lab 3\mesh.cpp(1017): warning C4101: 'i': unreferenced local variable
+supportClass.obj : warning LNK4099: PDB 'vc141.pdb' was not found with 'supportClass.obj' or at 'C:\Users\Meep\source\repos\192_DHMT\Lab\Lab3\Debug\vc141.pdb'; linking object as if no debug info
   Lab3.vcxproj -> C:\Users\Meep\source\repos\192_DHMT\Lab\Lab3\Debug\Lab3.exe

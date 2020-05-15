@@ -17,9 +17,14 @@ using namespace std;
 #define PI		3.1415926
 #define DEC2RAG PI/180.0
 #define RAG2DEG 180/PI
-float	eyex=-8, eyey=6, eyez=8; 
+float	eyex = -8, eyey = 6, eyez = 8;
 float	upx = 0, upy = 1, upz = 0;
-bool toggle = false;
+bool	toggle = false;
+
+float	old_dx, old_dy;
+
+float alpha = 0.0, beta = 0.0, gramma = 0.0;
+
 int		screenWidth = 1200;
 int		screenHeight = 600;
 
@@ -43,7 +48,7 @@ float	holder1SizeY = 0.3;
 float	holder1SizeZ = 0.5;
 float	holder1Cutlength = 0.3;
 
-float	holder2SizeX = 1.0;
+float	holder2SizeX = 1.3;
 float	holder2SizeY = 0.9;
 float	holder2SizeZ = 0.5;
 float	holder2Cutlength = 0.3;
@@ -61,7 +66,7 @@ float	tayquaySizeY = 0.25;
 float	tayquayfRadius = 0.1;
 float	tayquaynRadius = 0.05;
 float	tayquayfHeight = 0.35;
-float	tayquaytotalLength = tayquaySizeX + tayquayfRadius/2.0 - tayquaynRadius;
+float	tayquaytotalLength = tayquaySizeX + tayquayfRadius / 2.0 - tayquaynRadius;
 
 float	taynoi1SizeX = 1.9;
 float	taynoi1SizeY = 0.25;
@@ -125,31 +130,20 @@ float radius;
 bool bFinish;
 point2 _a, _b, _c, _d;
 void CalculatePoint() {
-	
+
 	_a.x = Key1.slideX + tayquaytotalLength * cos(fangle);
 	_a.y = Key1.slideZ + tayquaytotalLength * sin(fangle);
-		
+
 
 	glPointSize(10);
 	glColor3f(0.5, 0.5, 0.5);
-	glBegin(GL_POINTS);
-	glVertex3f(_a.x,
-		tayquayfHeight + 2 * holder3Size + body1SizeY +
-		cylHeight * cyl.scaleY + baseHeight,
-		_a.y);
-	glEnd();
+	
 	//_a.draw();
 
 	_b.x = Key3.slideX;
 	_b.y = Key3.slideZ;
 	glColor3f(1.0, 0, 0);
-	glBegin(GL_POINTS);
-	glVertex3f(_b.x,
-		taynoi2fHeight / 2 + 0.01 + slider1SizeY +
-		holder1SizeY + body1SizeY +
-		cylHeight * cyl.scaleY + baseHeight,
-		_b.y);
-	glEnd();
+	
 	glColor3f(0.5, 0.5, 0.5);
 	//_b.draw();
 	point2 _h;
@@ -162,19 +156,19 @@ void CalculatePoint() {
 	//a.set(-a.y, a.x); //Chuyen no than vector phap tuyen cua duong trung truc
 	a_perp.set(-a.y, a.x);
 
-	cout << "_a.x,_a.y=(" << _a.x << "," << _a.y << ")"<<endl;
-	cout << "_b.x,_b.y=(" << _b.x << "," << _b.y << ")" << endl;
-	cout << "a.x,a.y=(" << a.x << "," << a.y << ")" << endl;
+	//cout << "_a.x,_a.y=(" << _a.x << "," << _a.y << ")"<<endl;
+	//cout << "_b.x,_b.y=(" << _b.x << "," << _b.y << ")" << endl;
+	//cout << "a.x,a.y=(" << a.x << "," << a.y << ")" << endl;
 
 	float l = (a.x*_h.x + a.y*_h.y) / a.y;
 	// Giai he phuong trinh bac 2 de tim toa do trong tam hinh tron
 	float heso1, heso2, heso3;
 	heso1 = 1.0 + (a.x / a.y)*(a.x / a.y);
-	heso2 = (-2.0 * _b.x) - (2.0 * (l-_b.y)*(a.x / a.y));
+	heso2 = (-2.0 * _b.x) - (2.0 * (l - _b.y)*(a.x / a.y));
 	heso3 = (_b.x*_b.x) - (taynoitotallength * taynoitotallength) + ((l - _b.y) * (l - _b.y));
 	float x1;
 	float x2;
-	cout << "Heso1: " << heso1 << endl;
+	bool vonghiem = false;
 	if (heso1 == 0) {
 		// a== 0 phuong trinh tro thanh phuong trinh bac mot bx + c = 0
 		if (heso2 == 0) {
@@ -194,24 +188,35 @@ void CalculatePoint() {
 		if (delta > 0.0) {
 			x1 = (-heso2 + sqrt(delta)) / (2.0 * heso1);
 			x2 = (-heso2 - sqrt(delta)) / (2.0 * heso1);
-			
+			old_dx = x1;
+			old_dy = l - (a.x / a.y)*x1;
 		}
 		else if (delta == 0) {
 			cout << "Phuong trinh co nghiem kep: x1 = x2 = " << -heso2 / 2.0 * heso1 << endl;
 			x1 = -heso2 / 2.0 * heso1;
 		}
 		else {
-			x1 = (-heso2 + sqrt(delta)) / (2.0 * heso1);
+
 			cout << "Phuong trinh vo nghiem" << endl;
+			vonghiem = true;
 		}
 	}
-	_d.x = x1;
-	_d.y = l - (a.x / a.y)*x1 ;
-	
+	//_d.x = x1;
+	//_d.y = l - (a.x / a.y)*x1;
+	if (vonghiem == true) {
+		_d.x = old_dx;
+		_d.y = old_dy;
+		vonghiem = false;
+
+	}
+	else {
+		_d.x = x1;
+		_d.y = l - (a.x / a.y)*x1;
+	}
 	_c.y = Key4.slideZ;
 	heso1 = 1.0;
 	heso2 = -2.0 * _d.x;
-	heso3 = (_c.y-_d.y)*(_c.y-_d.y) - taynoitotallength* taynoitotallength +_d.x*_d.x;
+	heso3 = (_c.y - _d.y)*(_c.y - _d.y) - taynoitotallength * taynoitotallength + _d.x*_d.x;
 	if (heso1 == 0) {
 		// a== 0 phuong trinh tro thanh phuong trinh bac mot bx + c = 0
 		if (heso2 == 0) {
@@ -231,8 +236,8 @@ void CalculatePoint() {
 		if (delta > 0) {
 			x1 = (-heso2 + sqrt(delta)) / (2.0 * heso1);
 			x2 = (-heso2 - sqrt(delta)) / (2.0 * heso1);
-			cout << "Nghiem thu nhat x1 = " << x1 << endl;
-			cout << "Nghiem thu hai x2 = " << x2 << endl;
+			//cout << "Nghiem thu nhat x1 = " << x1 << endl;
+			//cout << "Nghiem thu hai x2 = " << x2 << endl;
 		}
 		else if (delta == 0) {
 			cout << "Phuong trinh co nghiem kep: x1 = x2 = " << -heso2 / 2.0 * heso1 << endl;
@@ -249,6 +254,35 @@ void CalculatePoint() {
 	//double DC = sqrt(pow(_d.x - _c.x, 2) + pow(_d.y - _c.y, 2));
 	//cout << "R by default= " << taynoitotallength << endl;
 	//cout << "(DA,DB,DC)= " << DA << "," << DB << "," << DC << endl;
+
+	//Tinh goc Alpha, beta, gamma
+
+	float BO = taynoitotallength;
+	float dB = abs(_d.x - _b.x);
+	beta = acos(dB / BO);
+
+	float dC = abs(_c.x - _d.x);
+	float OD = taynoitotallength;
+	gramma = acos(dB / OD);
+
+	//Alpha tinh bang goc giua 2 vecto (AD,AK)
+	//vector _ad, _ak;
+	//_ad.set(_d.x - _a.x,  _d.y- _a.y );
+	//_ak.set(Key1.slideX - _a.x, Key1.slideZ - _a.y);
+	//float under = (_ad.length()*_ak.length());
+	//alpha = acos(_ad.dotProduct(_ak)/under);
+
+	//vector _da, _dk;
+	//_da.set(_a.x - _d.x, _a.y - _d.y);
+	//_dk.set(Key1.slideX - _d.x, Key1.slideZ - _d.y);
+	//float under = (_da.length()*_dk.length());
+	//alpha = acos(_da.dotProduct(_dk) / under);
+
+	float dA;
+
+	dA = abs(_a.x - _d.x);
+	float AO = taynoitotallength;
+	alpha = acos(dA / AO);
 }
 void findExCircle()
 {
@@ -319,35 +353,47 @@ void myKeyboard(unsigned char key, int x, int y)
 		break;
 	case '3':
 		fangle -= baseRotateStep * DEC2RAG;
-		TayNoi1.rotateY -= baseRotateStep;
-		Key1.rotateY += baseRotateStep;
+
+		//TayNoi1.rotateY -= baseRotateStep;
+		//cout << "fangle: " << fangle * RAG2DEG << endl;
+		//Key1.rotateY += baseRotateStep;
+		if (fangle * RAG2DEG < 0)
+		{
+			fangle += 360 * DEC2RAG;
+		}
 		if (Key1.rotateY > 360)
 		{
 			Key1.rotateY -= 360;
-
 		}
-
 		break;
 	case '4':
 		fangle += baseRotateStep * DEC2RAG;
 		TayNoi1.rotateY += baseRotateStep;
 		Key1.rotateY -= baseRotateStep;
+		if (fangle*RAG2DEG > 360)
+		{
+			fangle = 0 * DEC2RAG;
+		}
 		if (TayQuay.rotateY < 0)
 			TayQuay.rotateY += 360;
 		break;
 	case '5':
-		if (holder2SizeX*holder2.scaleX / 2 + slider2.slideX < (body1SizeX * body1.scaleX - slider2SizeX))
+		//if (holder2SizeX*holder2.scaleX / 2 + slider2.slideX < (body1SizeX * body1.scaleX - slider2SizeX))
+		if (slider1.slideX <= 1.3 && slider2.slideX <= 1.3)
 		{
 			slider1.slideX += 0.1;
 			slider2.slideX += 0.1;
 		}
+		cout << "slider1,2: " << slider1.slideX << " ," << slider2.slideX << endl;
 		break;
 	case '6':
-		if (-body1SizeX * body1.scaleX + slider1SizeX * slider1.scaleX / 2.0 + slider1.slideX > (-body1SizeX * body1.scaleX + slider1SizeX))
+		//if (-body1SizeX * body1.scaleX + slider1SizeX * slider1.scaleX / 2.0 + slider1.slideX > (-body1SizeX * body1.scaleX + slider1SizeX))
+		if (slider1.slideX >= 0.2 && slider2.slideX >= 0.2)
 		{
 			slider1.slideX -= 0.1;
 			slider2.slideX -= 0.1;
 		}
+		cout << "slider1,2: " << slider1.slideX << " ," << slider2.slideX << endl;
 		break;
 	case 'w':
 	case 'W':
@@ -385,7 +431,7 @@ void myKeyboard(unsigned char key, int x, int y)
 			cyl.scaleY -= 0.1;
 		break;
 	}
-	
+
 
 	glutPostRedisplay();
 }
@@ -484,9 +530,12 @@ void drawSlider1() {
 	slider1.scaleY = -1;
 	slider1.scaleX = 2;
 	glRotatef(base.rotateY, 0, 1, 0);
-	glTranslated(-body1SizeX * body1.scaleX + slider1SizeX * slider1.scaleX / 2.0 + slider1.slideX,
+	//glTranslated(-body1SizeX * body1.scaleX + slider1SizeX * slider1.scaleX / 2.0 + slider1.slideX,
+	//	0.01 + slider1SizeY + holder1SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
+	//	-body1SizeZ * body1.scaleZ);
+	glTranslated(_b.x,
 		0.01 + slider1SizeY + holder1SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
-		-body1SizeZ * body1.scaleZ);
+		_b.y - slider1SizeZ / 2);
 
 	glScalef(slider1.scaleX, slider1.scaleY, slider1.scaleZ);
 	if (bWireFrame)
@@ -501,9 +550,12 @@ void drawSlider2() {
 	slider2.scaleX = 2;
 
 	glRotatef(base.rotateY, 0, 1, 0);
-	glTranslated(holder2SizeX*holder2.scaleX / 2 + slider2.slideX,
+	//glTranslated(holder2SizeX*holder2.scaleX / 2 + slider2.slideX,
+	//	0.01 + slider2SizeY + holder2SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
+	//	-body1SizeZ * body1.scaleZ);
+	glTranslated(_c.x,
 		0.01 + slider2SizeY + holder2SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
-		-body1SizeZ * body1.scaleZ);
+		_c.y - slider2SizeZ / 2);
 	glScalef(slider2.scaleX, slider2.scaleY, slider2.scaleZ);
 	if (bWireFrame)
 		slider2.DrawWireframe();
@@ -542,9 +594,11 @@ void drawKey1() {
 	Key1.slideX = 0;
 	Key1.slideY = tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight;
 	Key1.slideZ = body1SizeZ * body1.scaleZ - holder3Size / 2.0;
-	glTranslated(0, tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight, body1SizeZ * body1.scaleZ - holder3Size / 2.0);
+	glTranslated(0,
+		tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
+		body1SizeZ * body1.scaleZ - holder3Size / 2.0);
 	glScalef(Key1.scaleX, Key1.scaleY, Key1.scaleZ);
-	//cout << tayquaySizeX << " " << tayquaySizeY <<" "<< TayQuay.scaleX << endl;
+
 	if (bWireFrame)
 		Key1.DrawWireframe();
 	else
@@ -560,17 +614,13 @@ void drawKey2() {
 	//	glRotatef(Key1.rotateY, 0, 1, 0);
 	//	glTranslated(0, -(tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight), -(body1SizeZ * body1.scaleZ - holder3Size / 2.0));
 	//}
-	//cout << "translate cua Chot 2:" << endl;
-	//cout << "x= " << tayquaySizeX << endl;
-	//cout << "z= " << body1SizeZ * body1.scaleZ - holder3Size / 2.0 << endl;
 
 	//glTranslated(tayquaySizeX ,
 	//	tayquayfHeight / 2 + tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
 	//	body1SizeZ * body1.scaleZ - holder3Size / 2.0);
 	glTranslated(_a.x,
 		tayquayfHeight / 2 + tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
-		_a.y + body1SizeZ * body1.scaleZ - holder3Size / 2.0);
-	cout << _a.y << endl;
+		_a.y);
 	glScalef(Key2.scaleX, Key2.scaleY, Key2.scaleZ);
 	//cout << tayquaySizeX << " " << tayquaySizeY <<" "<< TayQuay.scaleX << endl;
 	if (bWireFrame)
@@ -586,9 +636,12 @@ void drawKey3() {
 	Key3.slideX = -taynoi2SizeX / 2 + taynoi2SizeX / 2 + -body1SizeX * body1.scaleX + slider1SizeX * slider1.scaleX / 2.0 + slider1.slideX;
 	Key3.slideY = taynoi2fHeight / 2 + 0.01 + slider1SizeY + holder1SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight;
 	Key3.slideZ = slider1SizeZ / 2 + -body1SizeZ * body1.scaleZ;
-	glTranslated(-taynoi2SizeX / 2 + taynoi2SizeX / 2 + -body1SizeX * body1.scaleX + slider1SizeX * slider1.scaleX / 2.0 + slider1.slideX,
+	//glTranslated(-taynoi2SizeX / 2 + taynoi2SizeX / 2 + -body1SizeX * body1.scaleX + slider1SizeX * slider1.scaleX / 2.0 + slider1.slideX,
+	//	taynoi2fHeight / 2 + 0.01 + slider1SizeY + holder1SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
+	//	slider1SizeZ / 2 + -body1SizeZ * body1.scaleZ);
+	glTranslated(_b.x,
 		taynoi2fHeight / 2 + 0.01 + slider1SizeY + holder1SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
-		slider1SizeZ / 2 + -body1SizeZ * body1.scaleZ);	
+		_b.y);
 	glScalef(Key3.scaleX, Key3.scaleY, Key3.scaleZ);
 
 	if (bWireFrame)
@@ -620,7 +673,7 @@ void drawKey4() {
 void drawKey5() {
 	glPushMatrix();
 	glRotatef(base.rotateY, 0, 1, 0);
-	
+
 	//glTranslated(Key5.slideX,
 	//	TayNoi1.slideY,
 	//	Key5.slideZ);
@@ -638,41 +691,60 @@ void drawKey5() {
 }
 void drawTayNoi1() {
 	glPushMatrix();
-	TayNoi1.rotateY = -47.0;
+	//TayNoi1.rotateY = -47.0;
 	{
 		glRotatef(base.rotateY, 0, 1, 0);
 	}
 	//
 
-	{ // Xoay quanh Chot Key1
-		glTranslated(0, tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight, body1SizeZ * body1.scaleZ - holder3Size / 2.0);
+	//{ // Xoay quanh Chot Key1
+	//	glTranslated(0, tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight, body1SizeZ * body1.scaleZ - holder3Size / 2.0);
 
-		glRotatef(Key1.rotateY, 0, 1, 0);
+	//	glRotatef(Key1.rotateY, 0, 1, 0);
 
-		glTranslated(0, -(tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight), -(body1SizeZ * body1.scaleZ - holder3Size / 2.0));
-	}
+	//	glTranslated(0, -(tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight), -(body1SizeZ * body1.scaleZ - holder3Size / 2.0));
+	//}
 
-	{ // Xoay quanh Chot Key2
-		glTranslated(tayquaySizeX, tayquayfHeight / 2 + tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight, body1SizeZ * body1.scaleZ - holder3Size / 2.0);
-		glRotatef(TayNoi1.rotateY, 0, 1.0, 0);
-		glTranslated(-tayquaySizeX,
-			-(tayquayfHeight / 2 + tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight),
-			-(body1SizeZ * body1.scaleZ - holder3Size / 2.0));
-	}
-	{//Xoay quanh Key5
+	//{ // Xoay quanh Chot Key2
+	//	glTranslated(tayquaySizeX, tayquayfHeight / 2 + tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight, body1SizeZ * body1.scaleZ - holder3Size / 2.0);
+	//	glRotatef(TayNoi1.rotateY, 0, 1.0, 0);
+	//	glTranslated(-tayquaySizeX,
+	//		-(tayquayfHeight / 2 + tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight),
+	//		-(body1SizeZ * body1.scaleZ - holder3Size / 2.0));
+	//}
+	//{//Xoay quanh Key5
 
-		glTranslatef(Key5.slideX, Key5.slideY, Key5.slideZ);
-		glRotatef(Key1.rotateY, 0, 1.0, 0);
-		glTranslatef(-Key5.slideX, -Key5.slideY, -Key5.slideZ);
-	}
+	//	glTranslatef(Key5.slideX, Key5.slideY, Key5.slideZ);
+	//	glRotatef(Key1.rotateY, 0, 1.0, 0);
+	//	glTranslatef(-Key5.slideX, -Key5.slideY, -Key5.slideZ);
+	//}
 
 	TayNoi1.slideX = tayquaySizeX;
 	TayNoi1.slideY = key1fHeight + tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight;
 	TayNoi1.slideZ = body1SizeZ * body1.scaleZ - holder3Size / 2.0;
 
-	glTranslatef(-(taynoi1SizeX / 2 - tayquaySizeX),
-		key1fHeight + tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
-		body1SizeZ * body1.scaleZ - holder3Size / 2.0);
+	//glTranslatef(-(taynoi1SizeX / 2 - tayquaySizeX),
+	//	key1fHeight + tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
+	//	body1SizeZ * body1.scaleZ - holder3Size / 2.0);
+
+	//cout << "alpha " << alpha * RAG2DEG << endl;
+	glTranslatef(_a.x, 0, _a.y);
+
+	if (_a.x > _d.x)
+	{
+		glRotatef(-alpha * RAG2DEG, 0, 1, 0);
+		glTranslatef(-taynoitotallength / 2,
+			key1fHeight + tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
+			0);
+	}
+	else
+	{
+		glRotatef(alpha*RAG2DEG, 0, 1, 0);
+		glTranslatef(taynoitotallength / 2,
+			key1fHeight + tayquayfHeight + 2 * holder3Size + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
+			0);
+	}
+
 	glScalef(TayNoi1.scaleX, TayNoi1.scaleY, TayNoi1.scaleZ);
 
 	if (bWireFrame)
@@ -686,25 +758,43 @@ void drawTayNoi2() {
 
 	glRotatef(base.rotateY, 0, 1, 0);
 
-	{
-		TayNoi2.rotateY = -20;
-		glTranslated(-taynoi2SizeX / 2 + taynoi2SizeX / 2 + -body1SizeX * body1.scaleX + slider1SizeX * slider1.scaleX / 2.0 + slider1.slideX,
-			taynoi2fHeight / 2 + 0.01 + slider1SizeY + holder1SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
-			slider1SizeZ / 2 + -body1SizeZ * body1.scaleZ);
-		glRotatef(TayNoi2.rotateY, 0, 1, 0);
-		glTranslated(-(-taynoi2SizeX / 2 + taynoi2SizeX / 2 + -body1SizeX * body1.scaleX + slider1SizeX * slider1.scaleX / 2.0 + slider1.slideX),
-			-(taynoi2fHeight / 2 + 0.01 + slider1SizeY + holder1SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight),
-			-(slider1SizeZ / 2 + -body1SizeZ * body1.scaleZ));
+	//{
+	//	TayNoi2.rotateY = -20;
+	//	glTranslated(-taynoi2SizeX / 2 + taynoi2SizeX / 2 + -body1SizeX * body1.scaleX + slider1SizeX * slider1.scaleX / 2.0 + slider1.slideX,
+	//		taynoi2fHeight / 2 + 0.01 + slider1SizeY + holder1SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
+	//		slider1SizeZ / 2 + -body1SizeZ * body1.scaleZ);
+	//	glRotatef(TayNoi2.rotateY, 0, 1, 0);
+	//	glTranslated(-(-taynoi2SizeX / 2 + taynoi2SizeX / 2 + -body1SizeX * body1.scaleX + slider1SizeX * slider1.scaleX / 2.0 + slider1.slideX),
+	//		-(taynoi2fHeight / 2 + 0.01 + slider1SizeY + holder1SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight),
+	//		-(slider1SizeZ / 2 + -body1SizeZ * body1.scaleZ));
 
-	}
+	//}
 	TayNoi2.slideX = -body1SizeX * body1.scaleX + slider1SizeX * slider1.scaleX / 2.0 + slider1.slideX;
 	TayNoi2.slideY = taynoi2fHeight / 2 + 0.01 + slider1SizeY + holder1SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight;
 	TayNoi2.slideZ = slider1SizeZ / 2 + -body1SizeZ * body1.scaleZ;
 
-	glTranslated(taynoi2SizeX / 2 + -body1SizeX * body1.scaleX + slider1SizeX * slider1.scaleX / 2.0 + slider1.slideX,
-		taynoi2fHeight / 2 + 0.01 + slider1SizeY + holder1SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
-		slider1SizeZ / 2 + -body1SizeZ * body1.scaleZ);
+	//glTranslated(taynoi2SizeX / 2 + -body1SizeX * body1.scaleX + slider1SizeX * slider1.scaleX / 2.0 + slider1.slideX,
+	//	taynoi2fHeight / 2 + 0.01 + slider1SizeY + holder1SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
+	//	slider1SizeZ / 2 + -body1SizeZ * body1.scaleZ);
 
+
+	glTranslatef(_b.x, 0, _b.y);
+	float rotate_val = -beta * RAG2DEG;
+	//cout << "rotate_val: " << rotate_val << endl;
+	//cout << "fangle: " << fangle * RAG2DEG << endl;
+
+	if (_b.y < _d.y)
+		glRotatef(rotate_val, 0, 1, 0);
+	else
+		glRotatef(-rotate_val, 0, 1, 0);
+
+	//if (fangle*RAG2DEG <= 305 and fangle*RAG2DEG >=200)
+	//	glRotatef(-rotate_val, 0, 1, 0);
+	//else
+	//	glRotatef(rotate_val, 0, 1, 0);
+	glTranslated(taynoitotallength / 2,
+		taynoi2fHeight / 2 + 0.01 + slider1SizeY + holder1SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
+		0);
 	glScalef(TayNoi2.scaleX, TayNoi2.scaleY, TayNoi2.scaleZ);
 	if (bWireFrame)
 		TayNoi2.DrawWireframe();
@@ -716,22 +806,30 @@ void drawTayNoi3() {
 	glPushMatrix();
 
 	glRotatef(base.rotateY, 0, 1, 0);
-	{
-		TayNoi3.rotateY = 20;
-		glTranslated(+holder2SizeX * holder2.scaleX / 2 + slider2.slideX,
-			taynoi3fHeight / 2 + 0.01 + slider2SizeY + holder2SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
-			slider2SizeZ / 2 + -body1SizeZ * body1.scaleZ);
-		glRotated(TayNoi3.rotateY, 0, 1, 0);
-		glTranslated(-(+holder2SizeX * holder2.scaleX / 2 + slider2.slideX),
-			-(taynoi3fHeight / 2 + 0.01 + slider2SizeY + holder2SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight),
-			-(slider2SizeZ / 2 + -body1SizeZ * body1.scaleZ));
-	}
+	//{
+	//	TayNoi3.rotateY = 20;
+	//	glTranslated(+holder2SizeX * holder2.scaleX / 2 + slider2.slideX,
+	//		taynoi3fHeight / 2 + 0.01 + slider2SizeY + holder2SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
+	//		slider2SizeZ / 2 + -body1SizeZ * body1.scaleZ);
+	//	glRotated(TayNoi3.rotateY, 0, 1, 0);
+	//	glTranslated(-(+holder2SizeX * holder2.scaleX / 2 + slider2.slideX),
+	//		-(taynoi3fHeight / 2 + 0.01 + slider2SizeY + holder2SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight),
+	//		-(slider2SizeZ / 2 + -body1SizeZ * body1.scaleZ));
+	//}
 	TayNoi3.slideX = +holder2SizeX * holder2.scaleX / 2 + slider2.slideX;
 	TayNoi3.slideY = taynoi3fHeight / 2 + 0.01 + slider2SizeY + holder2SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight;
 	TayNoi3.slideZ = slider2SizeZ / 2 + -body1SizeZ * body1.scaleZ;
-	glTranslated(-taynoi3SizeX / 2 + holder2SizeX * holder2.scaleX / 2 + slider2.slideX,
-		taynoi3fHeight / 2 + 0.01 + slider2SizeY + holder2SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
-		slider2SizeZ / 2 + -body1SizeZ * body1.scaleZ);
+	//glTranslated(-taynoi3SizeX / 2 + holder2SizeX * holder2.scaleX / 2 + slider2.slideX,
+	//	taynoi3fHeight / 2 + 0.01 + slider2SizeY + holder2SizeY + body1SizeY + cylHeight * cyl.scaleY + baseHeight,
+	//	slider2SizeZ / 2 + -body1SizeZ * body1.scaleZ);
+	
+	glTranslatef(_c.x, 0, _c.y);
+
+	if (_c.y < _d.y)
+		glRotatef(gramma * RAG2DEG, 0, 1, 0);
+	else
+		glRotatef(-gramma * RAG2DEG, 0, 1, 0);
+	glTranslatef(-taynoitotallength / 2.0, TayNoi3.slideY, 0);
 	glScalef(TayNoi3.scaleX, TayNoi3.scaleY, TayNoi3.scaleZ);
 	if (bWireFrame)
 		TayNoi3.DrawWireframe();
@@ -743,15 +841,15 @@ void myDisplay()
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(eyex,eyey,eyez, 0, 1, 0, upx,upy,upz);
+	gluLookAt(eyex, eyey, eyez, 0, 1, 0, upx, upy, upz);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glViewport(0, 0, screenWidth, screenHeight);
 
-	{//Delete THIS
-		glRotatef(angleY, 0.0, 1.0, 0.0);
-		glRotatef(angleX, 1.0, 0.0, 0.0);
-	}
+	//{//Delete THIS
+	//	glRotatef(angleY, 0.0, 1.0, 0.0);
+	//	glRotatef(angleX, 1.0, 0.0, 0.0);
+	//}
 	CalculatePoint();
 	drawAxis();
 	drawBase();
@@ -763,23 +861,28 @@ void myDisplay()
 	drawHolder2();
 	drawHolder3();
 
+	CalculatePoint();
 	drawSlider1();
 	drawSlider2();
 
 	drawTayQuay();
 
-	//drawTayNoi1();
+	drawKey1();
+	CalculatePoint();
+
+	drawTayNoi1();
 	drawTayNoi2();
 	drawTayNoi3();
 
 	CalculatePoint();
-	//findExCircle();
 
-	drawKey1();
+
+	//drawKey1();
 	drawKey2();
 	drawKey3();
-	drawKey4();	
+	drawKey4();
 	drawKey5();
+
 	glFlush();
 	glutSwapBuffers();
 }
@@ -791,9 +894,9 @@ void myInit()
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glColor3f(0.0f, 0.0f, 0.0f);
 
-	//glFrontFace(GL_CCW);
+	glFrontFace(GL_CCW);
 	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -803,22 +906,23 @@ void myInit()
 
 
 	Key3.slideX = -2.6;
-	Key3.slideY =2.785;
+	Key3.slideY = 2.785;
 	Key3.slideZ = -0.95;
 	Key4.slideZ = -0.95;
-	
+	slider1.slideX = 0.1;
+	slider2.slideX = 0.1;
 }
 void mySpecial(int key, int x, int y)
 {
-	if (key == GLUT_KEY_LEFT)
-		angleY -= 5;
-	if (key == GLUT_KEY_RIGHT)
-		angleY += 5;
-	if (key == GLUT_KEY_UP)
-		angleX -= 5;
-	if (key == GLUT_KEY_DOWN)
-		angleX += 5;
-	glutPostRedisplay();
+	//if (key == GLUT_KEY_LEFT)
+	//	angleY -= 5;
+	//if (key == GLUT_KEY_RIGHT)
+	//	angleY += 5;
+	//if (key == GLUT_KEY_UP)
+	//	angleX -= 5;
+	//if (key == GLUT_KEY_DOWN)
+	//	angleX += 5;
+	//glutPostRedisplay();
 }
 int main(int argc, char* argv[])
 {
