@@ -1,5 +1,6 @@
+//
 //#include <iostream>
-//#include <math.h>
+//
 //#include <GL/glew.h>
 //#include <GL/glut.h>
 //
@@ -98,7 +99,7 @@
 //	glFlush();
 //}
 //void myMenu(int id) {
-//	if (id == 1) coloridx = rand() % 4;
+//	if (id == 1) coloridx =  4;
 //	if (id == 2) exit(0);
 //}
 //void processColorMenu(int id) {
@@ -168,6 +169,6 @@
 //	glutReshapeFunc(myReshape_1);
 //	
 //	glutIdleFunc(myIdle);
-//
+//	
 //	glutMainLoop();
 //}

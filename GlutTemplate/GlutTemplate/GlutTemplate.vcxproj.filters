@@ -159,6 +159,12 @@
     <ClCompile Include="C7_glulookat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DeleteOK.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tester_CheckMODEL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Renderer.h">

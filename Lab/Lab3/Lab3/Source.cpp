@@ -54,7 +54,7 @@ float	holder2SizeZ = 0.5;
 float	holder2Cutlength = 0.3;
 
 float slider1SizeX = 0.4, slider2SizeX = 0.4;
-float slider1SizeY = 0.2, slider2SizeY = 0.4;
+float slider1SizeY = 0.3, slider2SizeY = 0.4;
 float slider1SizeZ = 0.5, slider2SizeZ = 0.5;
 float slider1Ulength = 0.45, slider2Ulength = 0.38;
 float slider1Llength = 0.25, slider2Llength = 0.2;
@@ -490,7 +490,9 @@ void drawHolder1()// Mặt bàn
 	glPushMatrix();
 	holder1.scaleX = 2;
 	glRotatef(base.rotateY, 0, 1, 0);
-	glTranslated(-body1SizeX * body1.scaleX + holder1SizeX * holder1.scaleX / 2 - .0001, holder1SizeY / 2.0 + body1SizeY + cylHeight * cyl.scaleY + baseHeight, -body1SizeZ * body1.scaleZ);
+	glTranslated(-body1SizeX * body1.scaleX + holder1SizeX * holder1.scaleX / 2 - .0001,
+		holder1SizeY / 2.0 + body1SizeY + cylHeight * cyl.scaleY + baseHeight, 
+		-body1SizeZ * body1.scaleZ);
 	glScalef(holder1.scaleX, holder1.scaleY, holder1.scaleZ);
 	if (bWireFrame)
 		holder1.DrawWireframe();

@@ -140,6 +140,7 @@
     <ClCompile Include="C6_H_rotate.cpp" />
     <ClCompile Include="C6_intro.cpp" />
     <ClCompile Include="C7_glulookat.cpp" />
+    <ClCompile Include="DeleteOK.cpp" />
     <ClCompile Include="L1_TurtleGraphic.cpp" />
     <ClCompile Include="L2_LogoBK.cpp" />
     <ClCompile Include="L3_Arrow.cpp" />
@@ -179,6 +180,7 @@
     <ClCompile Include="src\Tutorial.cpp" />
     <ClCompile Include="src\Class_Struct\VertexID.cpp" />
     <ClCompile Include="test.cpp" />
+    <ClCompile Include="Tester_CheckMODEL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Class_Struct\Face.h" />

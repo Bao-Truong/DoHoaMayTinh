@@ -90,17 +90,18 @@
 //	//glVertex2f(0.5, -0.5);
 //	//glEnd();
 //	
-//	/*glBegin(GL_TRIANGLE_FAN);
-//	glVertex2f(-0.5, 0.5);
-//	glVertex2f(0.5, 0.5);
-//	glVertex2f(-0.5, 0.0);
-//	
-//	glVertex2f(-0.5, -0.5);
-//	glVertex2f(0.5, -0.5);
-//	glEnd();*/
+//	//glBegin(GL_TRIANGLE_FAN);
+//	//glVertex2f(-0.5, 0.5);
+//	//glVertex2f(0.5, 0.5);
+//	//glVertex2f(-0.5, 0.0);
+//	//
+//	//glVertex2f(-0.5, -0.5);
+//	//glVertex2f(0.5, -0.5);
+//	//glEnd();
 //	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 //
 //	glBegin(GL_TRIANGLE_STRIP);
+//	
 //
 //	glVertex2f(0.5, -0.5);
 //
@@ -110,7 +111,7 @@
 //
 //	glVertex2f(-0.5, 0.5);
 //
-//	glVertex2f(-1.0, 0);
+//	glVertex2f(0.5,0.5);
 //	glEnd();
 //	glFlush();
 //}

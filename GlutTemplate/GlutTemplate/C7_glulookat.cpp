@@ -88,5 +88,9 @@
 //	init();
 //	glutDisplayFunc(myDisplay);
 //	glutReshapeFunc(myReshape);
+//	//glutKeyboardFunc();
+//	//glutMouseFunc();
+//	//glutTimerFunc();
+//	//glutSpecialFunc();
 //	glutMainLoop();
 //}

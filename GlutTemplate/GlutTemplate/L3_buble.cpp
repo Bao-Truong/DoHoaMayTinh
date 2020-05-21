@@ -39,7 +39,7 @@
 //}
 //void drawBackGround() {
 //	float vw = screen_Width / 15;
-//	int vh = screen_Height / 15;
+//	float vh = screen_Height / 15;
 //	for (int i = 0; i < 15; i++)
 //	{
 //		for (int j = 0; j < 15; j++)
@@ -85,10 +85,10 @@
 //	//// 1 0 1 0
 //
 //	//drawArcs();
-//	//drawBackGround();
-//	int factor=3;
-//	setCameraVolume(-factor, factor, -factor, factor);
-//	MakeGon(2, 10, PI/2);
+//	drawBackGround();
+//	//int factor=3;
+//	//setCameraVolume(-factor, factor, -factor, factor);
+//	//MakeGon(2, 10, PI/2);
 //
 //	glFlush();
 //}
