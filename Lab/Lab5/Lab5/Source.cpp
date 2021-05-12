@@ -11,6 +11,7 @@
 #include <math.h>
 
 
+
 using namespace std;
 float alpha = 0.0, beta = 0.0, gramma = 0.0;
 float angleY, angleX;
@@ -24,6 +25,8 @@ int		screenHeight = 600;
 float	upx = 0, upy = 1, upz = 0;
 bool	toggle = false;
 bool	light1_off = true;
+bool	animate = false;
+bool	goright = true;
 
 float camera_angle;
 float camera_height;
@@ -68,7 +71,7 @@ float	holder3Size = 0.2;
 float	tayquaySizeX = 0.5;
 float	tayquaySizeY = 0.25;
 float	tayquayfRadius = 0.1;
-float	tayquaynRadius = 0.08;
+float	tayquaynRadius = 0.05;
 float	tayquayfHeight = 0.35;
 float    tayquaytotalLength = tayquaySizeX + tayquayfRadius / 2.0 - tayquaynRadius;
 
@@ -76,7 +79,7 @@ float    tayquaytotalLength = tayquaySizeX + tayquayfRadius / 2.0 - tayquaynRadi
 float	taynoi1SizeX = 1.9;
 float	taynoi1SizeY = 0.25;
 float	taynoi1fRadius = 0.1;
-float	taynoi1nRadius = 0.08;
+float	taynoi1nRadius = 0.05;
 float	taynoi1fHeight = 0.35;
 float        taynoitotallength = taynoi1SizeX + taynoi1fRadius / 2.0 - taynoi1nRadius;
 
@@ -319,6 +322,49 @@ void setupLight() {
 
 }
 
+void animation() {
+	
+		fangle -= 0.8 * DEC2RAG;
+		if (fangle * RAG2DEG < 0)
+		{
+			fangle += 360 * DEC2RAG;
+		}
+		
+		if (abs(slider1.slideX - 1.3 )<0.001)
+		{
+	
+			goright = false;
+		}
+		if (abs(slider1.slideX - 0.2) < 0.001)
+		{
+			
+			goright = true;
+		}
+		if (goright==true)
+		{
+			if (slider1.slideX <= 1.3 && slider2.slideX <= 1.3)
+			{
+				
+				slider1.slideX += 0.005;
+				slider2.slideX += 0.005;
+			}
+		}
+		
+		if (goright == false)
+		{
+			if (slider1.slideX >= 0.2 && slider2.slideX >= 0.2)
+			{
+		
+				slider1.slideX -= 0.005;
+				slider2.slideX -= 0.005;
+			}
+		}
+		
+
+		glutPostRedisplay();
+
+	
+}
 void drawAxis()
 {
 	glPushMatrix();
@@ -357,8 +403,6 @@ void myKeyboard(unsigned char key, int x, int y)
 		break;
 	case '3':
 		fangle -= baseRotateStep * DEC2RAG;
-
-
 		if (fangle * RAG2DEG < 0)
 		{
 			fangle += 360 * DEC2RAG;
@@ -392,6 +436,14 @@ void myKeyboard(unsigned char key, int x, int y)
 			slider1.slideX -= 0.1;
 			slider2.slideX -= 0.1;
 		}
+		break;
+	case 'a':
+	case 'A':
+		animate = !animate;
+		if (animate)
+			glutIdleFunc(animation);
+		else
+			glutIdleFunc(NULL);
 		break;
 	case 'd':
 	case 'D':
@@ -483,7 +535,7 @@ void mySpecial(int key, int x, int y)
 		camera_height -= 0.5;
 
 	}
-	cout << "Camera_height: " << camera_height << endl;
+
 	if (key == GLUT_KEY_RIGHT)
 		camera_angle += 2;
 	if (key == GLUT_KEY_LEFT)
@@ -502,6 +554,7 @@ void drawBase() //Đế dưới cùng
 		base.DrawWireframe();
 	else
 	{
+		base.CalculateFacesNorm();		
 		float matrix_ambient[] = { 0.8, 0.2, 0.2, 1.0 };
 		float matrix_diffuse[] = { 1.0,0.0,0.0, 1.0f };
 		float matrix_specular[] = { 0, 0, 0, 1 };

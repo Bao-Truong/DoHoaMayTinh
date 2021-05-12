@@ -123,8 +123,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\DemoSrc\DemoSrc\Viewing\Cau1.cpp" />
+    <ClCompile Include="..\..\..\DemoSrc\DemoSrc\Viewing\Cau2.cpp" />
+    <ClCompile Include="..\..\..\DemoSrc\DemoSrc\Viewing\Cau3.cpp" />
+    <ClCompile Include="..\..\..\DemoSrc\DemoSrc\Viewing\Cau4.cpp" />
+    <ClCompile Include="..\..\..\DemoSrc\DemoSrc\Viewing\Cau6.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Cau5.cpp" />
     <ClCompile Include="supportClass.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Tut4">
+      <UniqueIdentifier>{c6efc262-d80a-4313-a2cd-d004e11d120a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Mesh.cpp">
@@ -23,6 +26,24 @@
     </ClCompile>
     <ClCompile Include="supportClass.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cau5.cpp">
+      <Filter>Source Files\Tut4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DemoSrc\DemoSrc\Viewing\Cau1.cpp">
+      <Filter>Source Files\Tut4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DemoSrc\DemoSrc\Viewing\Cau2.cpp">
+      <Filter>Source Files\Tut4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DemoSrc\DemoSrc\Viewing\Cau3.cpp">
+      <Filter>Source Files\Tut4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DemoSrc\DemoSrc\Viewing\Cau4.cpp">
+      <Filter>Source Files\Tut4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DemoSrc\DemoSrc\Viewing\Cau6.cpp">
+      <Filter>Source Files\Tut4</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
